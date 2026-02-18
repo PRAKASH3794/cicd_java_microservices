@@ -1,0 +1,70 @@
+jenkins:
+  systemMessage: "Jenkins CI/CD Starter (JCasC)"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: admin
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: true
+unclassified:
+  location:
+    url: http://localhost:8080/
+  sonarGlobalConfiguration:
+    installations:
+      - name: "SonarQube"
+        serverUrl: "http://sonarqube:9000"
+        serverAuthenticationToken: ""
+  mavenGlobalConfig:
+    globalSettingsProvider: "standard"
+    settingsProvider: "standard"
+  toolConfiguration:
+    installations:
+      maven:
+        installations:
+          - name: "M3"
+            properties:
+              - installSource:
+                  installers:
+                    - mavenInstaller:
+                        id: "3.9.9"
+      jdk:
+        installations:
+          - name: "JDK17"
+            properties:
+              - installSource:
+                  installers:
+                    - jdkInstaller:
+                        id: "17"
+  simple-theme-plugin:
+    elements: []
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+        - usernamePassword:
+            scope: GLOBAL
+            id: docker-registry-creds
+            username: ""
+            password: ""
+            description: "Docker registry creds"
+        - usernamePassword:
+            scope: GLOBAL
+            id: nexus-creds
+            username: "admin"
+            password: "admin123"
+            description: "Nexus creds (default demo)"
+        - string:
+            scope: GLOBAL
+            id: REGISTRY_URL
+            secret: "localhost:5000"
+            description: "Local registry URL"
+        - file:
+            scope: GLOBAL
+            id: kubeconfig
+            fileName: kubeconfig
+            description: "Kubeconfig for kind cluster"
