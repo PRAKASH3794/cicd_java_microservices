@@ -1,0 +1,34 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: bootstrap
+    init: |
+      ./infra/bootstrap.sh
+    command: |
+      gp preview $(gp url 8080) &> /dev/null &
+      gp preview $(gp url 9000) &> /dev/null &
+      gp preview $(gp url 8081) &> /dev/null &
+      bash
+ports:
+  - port: 8080
+    onOpen: open-preview
+    name: Jenkins
+  - port: 9000
+    onOpen: open-preview
+    name: SonarQube
+  - port: 8081
+    onOpen: open-preview
+    name: Nexus
+  - port: 32080
+    onOpen: ignore
+    name: K8s Ingress HTTP
+  - port: 32443
+    onOpen: ignore
+    name: K8s Ingress HTTPS
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
+    - hashicorp.terraform
+    - redhat.vscode-yaml
+    - vscjava.vscode-java-pack
